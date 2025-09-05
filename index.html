@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Grande Casa da Floresta em Perigo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .bg-pattern {
+            background-color: #fff1f2; /* rose-50 */
+            background-image: radial-gradient(circle at center center, #fce7f3, #fff1f2), repeating-radial-gradient(circle at center center, #fce7f3, #fce7f3, 10px, transparent 20px, transparent 10px);
+            background-blend-mode: multiply;
+        }
+        .animal-card.active .animal-details {
+            max-height: 500px;
+            opacity: 1;
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+        }
+        .web-node.active, .web-link.active {
+            transform: scale(1.1);
+            color: #db2777; /* pink-600 */
+        }
+        .web-node.active {
+             box-shadow: 0 0 15px rgba(219, 39, 119, 0.7);
+        }
+        .section-screen {
+            min-height: 100vh;
+            padding-top: 5rem;
+            padding-bottom: 5rem;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+        .audio-control-btn.playing svg.play-icon {
+            display: none;
+        }
+        .audio-control-btn:not(.playing) svg.stop-icon {
+            display: none;
+        }
+        @keyframes glow {
+          0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 0 5px rgba(219, 39, 119, 0);
+          }
+          50% {
+            transform: scale(1.15);
+            box-shadow: 0 0 20px rgba(219, 39, 119, 0.7);
+          }
+        }
+        .animate-attention-grab {
+          animation: glow 1.5s 2; /* Runs twice */
+          border-radius: 50%;
+        }
+    </style>
+</head>
+<body class="bg-[#fff1f2] text-gray-800">
+
+    <header class="bg-white/80 backdrop-blur-md sticky top-0 z-50 shadow-sm">
+        <nav class="container mx-auto px-6 py-3 flex justify-between items-center">
+            <h1 class="text-xl font-bold text-pink-800">SOS Amazônia</h1>
+            <div class="hidden md:flex space-x-6">
+                <a href="#inicio" class="text-gray-600 hover:text-pink-600 transition-colors">Início</a>
+                <a href="#problema" class="text-gray-600 hover:text-pink-600 transition-colors">O Problema</a>
+                <a href="#animais" class="text-gray-600 hover:text-pink-600 transition-colors">Os Animais</a>
+                <a href="#teia-da-vida" class="text-gray-600 hover:text-pink-600 transition-colors">A Teia da Vida</a>
+                <a href="#ajuda" class="text-gray-600 hover:text-pink-600 transition-colors">Como Ajudar</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-pink-800 focus:outline-none">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#inicio" class="block text-center py-2 px-4 text-sm text-gray-600 hover:bg-pink-50">Início</a>
+            <a href="#problema" class="block text-center py-2 px-4 text-sm text-gray-600 hover:bg-pink-50">O Problema</a>
+            <a href="#animais" class="block text-center py-2 px-4 text-sm text-gray-600 hover:bg-pink-50">Os Animais</a>
+            <a href="#teia-da-vida" class="block text-center py-2 px-4 text-sm text-gray-600 hover:bg-pink-50">A Teia da Vida</a>
+            <a href="#ajuda" class="block text-center py-2 px-4 text-sm text-gray-600 hover:bg-pink-50">Como Ajudar</a>
+        </div>
+        <div id="navigation-banner" class="bg-fuchsia-200 text-fuchsia-800 p-2 text-center text-sm font-semibold transition-opacity duration-1000 opacity-0">
+            Use o menu acima para navegar pela jornada e clique no botão 🔊 em cada seção para ouvir a história!
+        </div>
+    </header>
+
+    <main>
+        <section id="inicio" class="section-screen bg-pattern">
+            <div class="container mx-auto px-6 text-center">
+                <div class="flex justify-center items-center gap-4 mb-4 relative">
+                    <h2 class="text-4xl md:text-6xl font-bold text-pink-900">A Grande Casa da Floresta está em Perigo</h2>
+                    <button class="audio-control-btn text-pink-600 hover:text-pink-800" data-section="inicio" aria-label="Ouvir narração da seção Início">
+                        <svg class="w-8 h-8 play-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                        <svg class="w-8 h-8 stop-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clip-rule="evenodd"></path></svg>
+                    </button>
+                </div>
+                <p class="text-lg md:text-xl text-gray-700 max-w-3xl mx-auto mb-8">
+                    Imagine uma casa gigante, cheia de vida, cores e sons. Essa é a Floresta Amazônica. Mas a casa dela está a diminuir e os seus moradores precisam de ajuda. Vamos descobrir o porquê e como podemos tornar-nos heróis da floresta!
+                </p>
+                <a href="#problema" class="bg-pink-600 text-white font-bold py-3 px-8 rounded-full hover:bg-pink-700 transition-transform transform hover:scale-105">Explore a Jornada Abaixo</a>
+            </div>
+        </section>
+
+        <section id="problema" class="section-screen bg-white">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="text-center md:text-left">
+                        <div class="flex items-center gap-4 justify-center md:justify-start relative">
+                           <h3 class="text-3xl md:text-4xl font-bold text-pink-800">O que é o Desmatamento?</h3>
+                            <button class="audio-control-btn text-pink-600 hover:text-pink-800" data-section="problema" aria-label="Ouvir narração da seção O Problema">
+                                <svg class="w-8 h-8 play-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                                <svg class="w-8 h-8 stop-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clip-rule="evenodd"></path></svg>
+                            </button>
+                        </div>
+                        <p class="text-md text-gray-600 max-w-xl mt-4">
+                            Desmatamento é quando as pessoas cortam ou queimam muitas árvores da floresta. Isso destrói o lar de inúmeros animais e plantas, deixando um espaço vazio para trás. É como se apagassem uma parte da nossa grande casa verde.
+                        </p>
+                    </div>
+                    <div class="bg-rose-50 p-6 rounded-2xl shadow-lg w-full">
+                        <p class="text-center text-lg font-semibold text-rose-900 mb-2">A floresta perdida a cada dia é uma área enorme!</p>
+                        <p class="text-center text-sm text-gray-600 mb-4">Para ter uma ideia, a área desmatada diariamente na Amazônia em anos recentes equivale a milhares de campos de futebol. O gráfico abaixo ajuda a visualizar essa comparação.</p>
+                        <div class="chart-container relative w-full max-w-md mx-auto h-64 md:h-72">
+                            <canvas id="deforestationChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="animais" class="section-screen bg-pattern">
+            <div class="container mx-auto px-6">
+                <div class="text-center mb-12">
+                       <div class="flex items-center gap-4 justify-center relative">
+                         <h3 class="text-3xl md:text-4xl font-bold text-pink-800">Conheça os Moradores Ameaçados</h3>
+                         <button class="audio-control-btn text-pink-600 hover:text-pink-800" data-section="animais" aria-label="Ouvir narração da seção Os Animais">
+                             <svg class="w-8 h-8 play-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                             <svg class="w-8 h-8 stop-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clip-rule="evenodd"></path></svg>
+                         </button>
+                       </div>
+                    <p class="text-md text-gray-600 max-w-2xl mx-auto mt-4">Clique num animal para descobrir porque a casa dele está em perigo.</p>
+                </div>
+                <div id="animal-gallery" class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                </div>
+            </div>
+        </section>
+
+        <section id="teia-da-vida" class="section-screen bg-white">
+            <div class="container mx-auto px-6">
+                 <div class="flex flex-col md:flex-row gap-8 items-center">
+                    <div class="md:w-1/2 lg:w-3/5 relative">
+                        <div class="relative w-full max-w-lg mx-auto aspect-square">
+                            <div data-info="As árvores dão casa e comida para muitos animais. Elas também mantêm o ar limpo." class="web-node absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-pink-200 text-pink-900 w-20 h-20 rounded-full flex items-center justify-center text-center font-bold text-sm cursor-pointer transition-transform">🌳<br>Árvores</div>
+                            <div data-info="A onça-pintada é a rainha da floresta! Ela controla a população de outros animais, mantendo o equilíbrio." class="web-node absolute top-8 left-8 bg-rose-200 text-rose-900 w-16 h-16 rounded-full flex items-center justify-center text-center font-bold text-xs cursor-pointer transition-transform">🐆<br>Onça</div>
+                            <div data-info="Os macacos ajudam a espalhar sementes pela floresta, plantando novas árvores sem perceber!" class="web-node absolute top-8 right-8 bg-fuchsia-200 text-fuchsia-900 w-16 h-16 rounded-full flex items-center justify-center text-center font-bold text-xs cursor-pointer transition-transform">🐒<br>Macacos</div>
+                            <div data-info="Os rios são as veias da floresta, levando água para todos. O boto e o peixe-boi vivem aqui." class="web-node absolute bottom-8 left-8 bg-pink-200 text-pink-900 w-16 h-16 rounded-full flex items-center justify-center text-center font-bold text-xs cursor-pointer transition-transform">💧<br>Rios</div>
+                            <div data-info="As aves, como a ararajuba, também espalham sementes e alegram a floresta com as suas cores e cantos." class="web-node absolute bottom-8 right-8 bg-purple-200 text-purple-900 w-16 h-16 rounded-full flex items-center justify-center text-center font-bold text-xs cursor-pointer transition-transform">🦜<br>Aves</div>
+                        </div>
+                    </div>
+                    <div class="md:w-1/2 lg:w-2/5 text-center md:text-left">
+                        <div class="flex items-center gap-4 justify-center md:justify-start relative">
+                            <h3 class="text-3xl md:text-4xl font-bold text-pink-800">A Teia da Vida</h3>
+                             <button class="audio-control-btn text-pink-600 hover:text-pink-800" data-section="teia-da-vida" aria-label="Ouvir narração da seção A Teia da Vida">
+                                 <svg class="w-8 h-8 play-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                                 <svg class="w-8 h-8 stop-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clip-rule="evenodd"></path></svg>
+                             </button>
+                        </div>
+                        <p class="text-md text-gray-600 max-w-2xl mt-4 mb-6">Na floresta, tudo está ligado! Clique nos elementos para ver como um depende do outro. Quando um desaparece, toda a teia abana.</p>
+                         <div class="bg-pink-50 p-6 rounded-2xl shadow-inner min-h-[100px]">
+                             <h4 class="font-bold text-lg mb-2 text-pink-900">Como funciona:</h4>
+                             <p id="web-info" class="text-gray-700 text-sm transition-opacity duration-300">Clique num círculo para ler sobre a sua importância na grande teia da vida da Amazônia.</p>
+                         </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="ajuda" class="section-screen bg-pattern">
+            <div class="container mx-auto px-6">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="text-center md:text-left">
+                        <div class="flex items-center gap-4 justify-center md:justify-start relative">
+                            <h3 class="text-3xl md:text-4xl font-bold text-pink-800">Seja um Herói da Floresta!</h3>
+                             <button class="audio-control-btn text-pink-600 hover:text-pink-800" data-section="ajuda" aria-label="Ouvir narração da seção Como Ajudar">
+                                 <svg class="w-8 h-8 play-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+                                 <svg class="w-8 h-8 stop-icon" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8 7a1 1 0 00-1 1v4a1 1 0 001 1h4a1 1 0 001-1V8a1 1 0 00-1-1H8z" clip-rule="evenodd"></path></svg>
+                             </button>
+                        </div>
+                        <p class="text-md text-gray-600 max-w-xl mt-4">
+                            Mesmo de longe, pequenas atitudes podem fazer uma grande diferença para proteger a Amazônia. Veja algumas ideias do que pode fazer para ajudar! Cada gesto conta para cuidarmos da nossa grande casa verde.
+                        </p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-6">
+                        <div class="bg-white p-6 rounded-2xl shadow-lg text-center transform transition-transform hover:scale-105">
+                            <div class="text-4xl mb-4">♻️</div>
+                            <h4 class="font-bold text-lg mb-2">Recicle e Reutilize</h4>
+                            <p class="text-sm text-gray-600">Separar o lixo ajuda a diminuir a poluição.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg text-center transform transition-transform hover:scale-105">
+                            <div class="text-4xl mb-4">💡</div>
+                            <h4 class="font-bold text-lg mb-2">Poupe Energia</h4>
+                            <p class="text-sm text-gray-600">Apague as luzes quando sair de uma divisão.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg text-center transform transition-transform hover:scale-105">
+                            <div class="text-4xl mb-4">🗣️</div>
+                            <h4 class="font-bold text-lg mb-2">Aprenda e Converse</h4>
+                            <p class="text-sm text-gray-600">Conte aos seus amigos e família o que aprendeu.</p>
+                        </div>
+                        <div class="bg-white p-6 rounded-2xl shadow-lg text-center transform transition-transform hover:scale-105">
+                            <div class="text-4xl mb-4">🛒</div>
+                            <h4 class="font-bold text-lg mb-2">Consumo Consciente</h4>
+                            <p class="text-sm text-gray-600">Prefira produtos de empresas que cuidam do meio ambiente.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="bg-pink-900 text-white pt-12 pb-8">
+        <div class="container mx-auto px-6 text-center">
+            <h4 class="font-bold text-lg mb-4">Fontes e Referências</h4>
+            <div class="flex flex-wrap justify-center gap-x-6 gap-y-2 text-sm">
+                <a href="https://www.greenpeace.org/brasil/blog/animais-em-extincao-na-amazônia/" target="_blank" class="hover:text-pink-300">Greenpeace Brasil</a>
+                <a href="https://www.todamateria.com.br/animais-em-extincao-na-floresta-amazônica/" target="_blank" class="hover:text-pink-300">Toda Matéria</a>
+                <a href="https://mundoeducacao.uol.com.br/geografia/floresta-amazônica-1.htm" target="_blank" class="hover:text-pink-300">Mundo Educação</a>
+                <a href="https://imazon.org.br/" target="_blank" class="hover:text-pink-300">Imazon</a>
+                <a href="https://www.wwf.org.br/" target="_blank" class="hover:text-pink-300">WWF Brasil</a>
+            </div>
+            <p class="text-xs text-pink-200 mt-8">&copy; 2025 SOS Amazônia. Uma jornada interativa pela nossa floresta.</p>
+        </div>
+    </footer>
+    
+    <audio id="narrator-audio-player" class="hidden"></audio>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    if (this.getAttribute('href') !== '#') {
+                        e.preventDefault();
+                        document.querySelector(this.getAttribute('href')).scrollIntoView({
+                            behavior: 'smooth'
+                        });
+                    }
+                     if (!mobileMenu.classList.contains('hidden')) {
+                         mobileMenu.classList.add('hidden');
+                     }
+                });
+            });
+
+            const deforestationData = {
+                labels: ['Campos de Futebol', 'Floresta Perdida (por dia)'],
+                datasets: [{
+                    label: 'Área Equivalente',
+                    data: [1300, 1300],
+                    backgroundColor: [
+                        'rgba(244, 114, 182, 0.6)', // pink-400
+                        'rgba(219, 39, 119, 0.6)',   // pink-600
+                    ],
+                    borderColor: [
+                        'rgba(244, 114, 182, 1)',
+                        'rgba(219, 39, 119, 1)',
+                    ],
+                    borderWidth: 1
+                }]
+            };
+
+            const deforestationChartCtx = document.getElementById('deforestationChart').getContext('2d');
+            new Chart(deforestationChartCtx, {
+                type: 'bar',
+                data: deforestationData,
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    if (context.label === 'Campos de Futebol') {
+                                        return ' Um campo de futebol tem cerca de 7.140 m².';
+                                    }
+                                    return ` Num dia, foi perdida uma área de floresta equivalente a ${context.raw} campos.`;
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: 'Comparação de Área'
+                            }
+                        }
+                    }
+                }
+            });
+
+            const animals = [
+                { name: 'Onça-Pintada', emoji: '🐆',
+                  info: 'A rainha da floresta! É o maior felino das Américas e precisa de muito espaço para caçar. O desmatamento diminui o seu território e a sua comida.' },
+                { name: 'Macaco-Aranha', emoji: '🕷️🐒',
+                  info: 'Adora pular de galho em galho! Com menos árvores, perde as suas "estradas" na floresta e fica isolado, sem conseguir encontrar comida ou outros macacos.' },
+                { name: 'Ararajuba', emoji: '🦜',
+                  info: 'Uma ave com as cores do Brasil! Só existe na Amazônia. A destruição do seu habitat e o tráfico ilegal colocam-na em grande perigo.' },
+                { name: 'Boto-Cor-de-Rosa', emoji: '🐬',
+                  info: 'O golfinho dos rios! Sofre com a poluição da água causada pela mineração e pelo desmatamento nas margens dos rios.' },
+                { name: 'Peixe-Boi-da-Amazônia', emoji: '🐄🌊',
+                  info: 'Um gigante gentil dos rios. Alimenta-se de plantas aquáticas, que desaparecem com a poluição e a mudança no curso dos rios.' },
+                { name: 'Lontra-Gigante', emoji: '🦦',
+                  info: 'A "onça-d\'água"! É uma lontra gigante que precisa de rios limpos para pescar. A poluição e a destruição das matas ciliares (as florestas das beiras dos rios) ameaçam a sua casa.' }
+            ];
+
+            const gallery = document.getElementById('animal-gallery');
+            if (gallery) {
+                animals.forEach(animal => {
+                    const card = document.createElement('div');
+                    card.className = 'animal-card bg-white rounded-2xl shadow-lg overflow-hidden cursor-pointer transition-transform transform hover:scale-105';
+                    card.innerHTML = `
+                        <div class="p-6">
+                            <div class="flex items-center">
+                                <span class="text-5xl mr-4">${animal.emoji}</span>
+                                <h4 class="text-xl font-bold text-gray-800">${animal.name}</h4>
+                            </div>
+                            <div class="animal-details max-h-0 opacity-0 overflow-hidden transition-all duration-500 ease-in-out">
+                                <p class="text-sm text-gray-600">${animal.info}</p>
+                            </div>
+                        </div>
+                    `;
+                    gallery.appendChild(card);
+                });
+                
+                gallery.addEventListener('click', function(e) {
+                    const clickedCard = e.target.closest('.animal-card');
+                    if (!clickedCard) return;
+
+                    const allCards = gallery.querySelectorAll('.animal-card');
+                    allCards.forEach(card => {
+                        if (card !== clickedCard) {
+                            card.classList.remove('active');
+                        }
+                    });
+                    clickedCard.classList.toggle('active');
+                });
+            }
+            
+            const webNodes = document.querySelectorAll('.web-node');
+            const webInfo = document.getElementById('web-info');
+            if (webNodes.length > 0 && webInfo) {
+                webNodes.forEach(node => {
+                    node.addEventListener('click', () => {
+                        webNodes.forEach(n => n.classList.remove('active'));
+                        node.classList.add('active');
+                        webInfo.textContent = node.dataset.info;
+                    });
+                });
+            }
+
+            const audioFiles = {
+                inicio: 'https://raw.githubusercontent.com/boffandre-cyber/audio-amazonia/main/In%C3%ADcio2.mp3',
+                problema: 'https://raw.githubusercontent.com/boffandre-cyber/audio-amazonia/main/O%20Problema1.mp3',
+                animais: 'https://raw.githubusercontent.com/boffandre-cyber/audio-amazonia/main/Os%20Animais1.mp3',
+                'teia-da-vida': 'https://raw.githubusercontent.com/boffandre-cyber/audio-amazonia/main/A%20Teia%20da%20Vida1.mp3',
+                ajuda: 'https://raw.githubusercontent.com/boffandre-cyber/audio-amazonia/main/Seja%20um%20Heroi%20da%20Floresta1.mp3'
+            };
+
+            const audioPlayer = document.getElementById('narrator-audio-player');
+            const audioButtons = document.querySelectorAll('.audio-control-btn');
+            let currentlyPlayingButton = null;
+
+            function stopNarration() {
+                if (!audioPlayer.paused) {
+                    audioPlayer.pause();
+                    audioPlayer.currentTime = 0;
+                }
+                if (currentlyPlayingButton) {
+                    currentlyPlayingButton.classList.remove('playing');
+                }
+                currentlyPlayingButton = null;
+            }
+
+            audioButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    const section = button.dataset.section;
+                    const audioSrc = audioFiles[section];
+                    
+                    if (currentlyPlayingButton === button) {
+                        stopNarration();
+                    } else {
+                        stopNarration();
+                        audioPlayer.src = audioSrc;
+                        audioPlayer.play();
+                        button.classList.add('playing');
+                        currentlyPlayingButton = button;
+                    }
+                });
+            });
+            
+            audioPlayer.addEventListener('ended', stopNarration);
+
+            const sections = document.querySelectorAll('main section');
+            const navLinks = document.querySelectorAll('header nav a, #mobile-menu a');
+            const navigationBanner = document.getElementById('navigation-banner');
+
+            setTimeout(() => {
+                navigationBanner.classList.remove('opacity-0');
+            }, 1000);
+
+            setTimeout(() => {
+                navigationBanner.classList.add('opacity-0');
+            }, 12000);
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const sectionId = entry.target.getAttribute('id');
+
+                        navLinks.forEach(link => {
+                            link.classList.remove('text-pink-600', 'font-bold');
+                            link.classList.add('text-gray-600');
+                            if (link.getAttribute('href') === `#${sectionId}`) {
+                                link.classList.remove('text-gray-600');
+                                link.classList.add('text-pink-600', 'font-bold');
+                            }
+                        });
+
+                        const audioBtn = entry.target.querySelector('.audio-control-btn');
+                        if (audioBtn && !entry.target.dataset.audioPrompted) {
+                            audioBtn.classList.add('animate-attention-grab');
+                            setTimeout(() => {
+                                audioBtn.classList.remove('animate-attention-grab');
+                            }, 3000);
+                            entry.target.dataset.audioPrompted = 'true';
+                        }
+                    }
+                });
+            }, { threshold: 0.6 });
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+        });
+    </script>
+</body>
+</html>
